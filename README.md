@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/mechang1program/TestP/_apis/build/status/BPVanillaMVC/TestP-ASP.NET-CI?branchName=master)](https://dev.azure.com/mechang1program/TestP/_build/latest?definitionId=9&branchName=master)
+
 # Sample ASP.NET Core application for Azure Pipelines docs
 
 For information on how to use this repository, see docs for [.NET Core](https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core).
