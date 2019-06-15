@@ -32,6 +32,6 @@ namespace dotnetcore_tests
 
           // Assert
           Assert.AreEqual("Your contact pagess.", result.ViewData["Message"]);
-        //}
+        }
     }
 }
