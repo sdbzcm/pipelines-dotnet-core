@@ -21,7 +21,7 @@ steps:
     testResultsFiles: '**/*.trx'
 
 - script:
-    echo hello world
+    echo hello world Chang Xiaobao
   displayName: 'Run one command line'
 
 - task: PublishBuildArtifacts@1
