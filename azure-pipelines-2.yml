@@ -11,6 +11,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  version: '1.0'
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
@@ -29,3 +30,13 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+
+- script: dotnet pack /p:PackageVersion=$(version)
+- task: NuGetCommand@2
+  displayName: Publish to a NuGet feed
+  inputs:
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: 'NuGet Service'
+    versioningScheme: byEnvVar
+    versionEnvVar: version
