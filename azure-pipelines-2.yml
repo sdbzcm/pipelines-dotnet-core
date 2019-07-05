@@ -34,11 +34,4 @@ steps:
     publishLocation: 'Container'
 
 
-- task: NuGetCommand@2
-  displayName: Publish to a NuGet feed
-  inputs:
-    command: pack
-    versioningScheme: byPrereleaseNumber
-    majorVersion: '$(Major)'
-    minorVersion: '$(Minor)'
-    patchVersion: '$(Patch)'
+
