@@ -18,3 +18,4 @@ steps:
 - task: DotNetCoreInstaller@0
   inputs:
    version: '2.1.300'
+- script: dotnet restore
