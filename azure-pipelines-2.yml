@@ -46,17 +46,46 @@
 #   cancelTimeoutInMinutes: 2
 
 # Test muiltiple configuration
+# jobs:
+# - job: Test
+#   strategy:
+#     maxParallel: 2
+#     matrix:
+#       US_IE:
+#         Location: US
+#         Browser: IE
+#       US_Chrome:
+#         Location: US
+#         Browser: Chrome
+#       Europe_Chrome:
+#         Location: Europe
+#         Browser: Chrome
+
+#Artifact download
+# test and upload my code as an artifact named WebSite
 jobs:
-- job: Test
-  strategy:
-    maxParallel: 2
-    matrix:
-      US_IE:
-        Location: US
-        Browser: IE
-      US_Chrome:
-        Location: US
-        Browser: Chrome
-      Europe_Chrome:
-        Location: Europe
-        Browser: Chrome
+- job: Build
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: npm test
+  - task: PublishBuildArtifacts@1
+    displayName: PublishBuildArtifacts
+    inputs:
+     PathtoPublish: '$(System.DefaultWorkingDirectory)'
+     artifactName: WebSite
+
+# download the artifact and deploy it only if the build job succeeded
+- job: deploy
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - checkout: none
+  - task: DownloadBuildArtifacts@0
+    displayName: 'DownLoad Build Artifacts'
+    inputs:
+      artifactName: WebSite
+      downloadPath: $(System.DefaultWorkingDirectory)
+
+  dependsOn: Build
+  condition: succeeded()
