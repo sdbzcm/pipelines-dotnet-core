@@ -11,6 +11,8 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  major: 1
+  minor: $[counter(variables['major'],100)]
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
@@ -31,5 +33,5 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-
+- bash: echo $(minor)
 
