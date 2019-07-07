@@ -39,3 +39,7 @@ jobs:
   condition: succeeded('B')
   steps:
   - script: echo this will run when B runs and succeeds
+
+- job: test
+  timeoutInMinutes: 10
+  cancelTimeoutInMinutes: 2
