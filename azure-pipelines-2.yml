@@ -63,29 +63,41 @@
 
 #Artifact download
 # test and upload my code as an artifact named WebSite
-jobs:
-- job: Build
-  pool:
-    vmImage: 'ubuntu-16.04'
-  steps:
-  - script: npm test
-  - task: PublishBuildArtifacts@1
-    displayName: PublishBuildArtifacts
-    inputs:
-     PathtoPublish: '$(System.DefaultWorkingDirectory)'
-     artifactName: WebSite
+# jobs:
+# - job: Build
+#   pool:
+#     vmImage: 'ubuntu-16.04'
+#   steps:
+#   - script: npm test
+#   - task: PublishBuildArtifacts@1
+#     displayName: PublishBuildArtifacts
+#     inputs:
+#      PathtoPublish: '$(System.DefaultWorkingDirectory)'
+#      artifactName: WebSite
 
-# download the artifact and deploy it only if the build job succeeded
-- job: deploy
-  pool:
-    vmImage: 'ubuntu-16.04'
-  steps:
-  - checkout: none
-  - task: DownloadBuildArtifacts@0
-    displayName: 'DownLoad Build Artifacts'
-    inputs:
-      artifactName: WebSite
-      downloadPath: $(System.DefaultWorkingDirectory)
+# # download the artifact and deploy it only if the build job succeeded
+# - job: deploy
+#   pool:
+#     vmImage: 'ubuntu-16.04'
+#   steps:
+#   - checkout: none
+#   - task: DownloadBuildArtifacts@0
+#     displayName: 'DownLoad Build Artifacts'
+#     inputs:
+#       artifactName: WebSite
+#       downloadPath: $(System.DefaultWorkingDirectory)
 
-  dependsOn: Build
-  condition: succeeded()
+#   dependsOn: Build
+#   condition: succeeded()
+
+# Access to OAuth token
+steps:
+- powershell: |
+    $url = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTIED/_apis/build/definitions/$($env:SYSTEM_DEFINITIONID)?api-version=4.1-preview"
+    Write-Host "URL: $url"
+    $pipeline = Invoke-RestMethod -Uri $url -Headeres @{
+      Authorization = "Bearer $env:TOKEN"
+    }
+    Write-Host "Pipeline = $($pipeline | ConvertTo-Json -Depth 100)"
+  env:
+    TOKEN: $(system.accesstoken)
