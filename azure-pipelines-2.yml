@@ -3,19 +3,39 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
+
+# jobs:
+# - job: Windows
+#   pool:
+#     vmImage: 'vs2017-win2016'
+#   steps:
+#   - script: echo hello from Windows
+# - job: macOS
+#   pool:
+#     vmImage: 'macOS-10.13'
+#   steps:
+#   - script: echo hello from macOS
+# - job: Linux
+#   pool:
+#     vmImage: 'ubuntu-16.04'
+#   steps:
+#   - script: echo hello from Windows
+
 jobs:
-- job: Windows
-  pool:
-    vmImage: 'vs2017-win2016'
+- job: A
   steps:
-  - script: echo hello from Windows
-- job: macOS
-  pool:
-    vmImage: 'macOS-10.13'
+  - script: exit 1
+
+- job: B
+  dependsOn: A
+  condition: failed()
   steps:
-  - script: echo hello from macOS
-- job: Linux
-  pool:
-    vmImage: 'ubuntu-16.04'
+  - script: echo this will run when A fails
+
+- job: C
+  dependsOn:
+  - A
+  - B
+  condition: succeeded('B')
   steps:
-  - script: echo hello from Windows
+  - script: echo this will run when B runs and succeeds
