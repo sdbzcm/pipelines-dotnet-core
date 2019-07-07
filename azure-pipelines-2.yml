@@ -3,18 +3,19 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger:
-- master
-
-pool:
-  vmImage: 'ubuntu-latest'
-
 jobs:
-- job: A
+- job: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
   steps:
-  - bash: echo "Job A"
-
-- job: B
+  - script: echo hello from Windows
+- job: macOS
+  pool:
+    vmImage: 'macOS-10.13'
   steps:
-  - bash: echo "Job B"
-
+  - script: echo hello from macOS
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: echo hello from Windows
