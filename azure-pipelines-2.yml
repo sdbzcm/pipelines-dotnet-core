@@ -21,25 +21,42 @@
 #   steps:
 #   - script: echo hello from Windows
 
+# Test Condition
+# jobs:
+# - job: A
+#   steps:
+#   - script: exit 1
+
+# - job: B
+#   dependsOn: A
+#   condition: failed()
+#   steps:
+#   - script: echo this will run when A fails
+
+# - job: C
+#   dependsOn:
+#   - A
+#   - B
+#   condition: succeeded('B')
+#   steps:
+#   - script: echo this will run when B runs and succeeds
+
+# - job: test
+#   timeoutInMinutes: 10
+#   cancelTimeoutInMinutes: 2
+
+# Test muiltiple configuration
 jobs:
-- job: A
-  steps:
-  - script: exit 1
-
-- job: B
-  dependsOn: A
-  condition: failed()
-  steps:
-  - script: echo this will run when A fails
-
-- job: C
-  dependsOn:
-  - A
-  - B
-  condition: succeeded('B')
-  steps:
-  - script: echo this will run when B runs and succeeds
-
-- job: test
-  timeoutInMinutes: 10
-  cancelTimeoutInMinutes: 2
+- job: Test
+  strategy:
+    maxParallel: 2
+    matrix:
+      US_IE:
+        Location: US
+        Browser: IE
+      US_Chrome:
+        Location: US
+        Browser: Chrome
+      Europe_Chrome:
+        Location: Europe
+        Browser: Chrome
