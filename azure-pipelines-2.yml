@@ -6,13 +6,15 @@
 trigger:
 - master
 
-job: myJob
-timeoutInMinutes: 10
-
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-  - bash: echo "Hello world"
+jobs:
+- job: A
+  steps:
+  - bash: echo "Job A"
 
+- job: B
+  steps:
+  - bash: echo "Job B"
 
