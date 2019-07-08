@@ -17,7 +17,7 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifacts'
   inputs:
-   PathtoPublish: '$(System.DefaultWorkingDirectory)'
-  condition: succeededOrFailed
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
