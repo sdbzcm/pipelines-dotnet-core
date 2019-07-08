@@ -15,3 +15,25 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- task: PublishSymbols@1
+  displayName: 'Publish symbols path:'
+  inputs:
+   SearchPattern: '**\bin\**\*.pdb'
+  continueOnError: true
+
+- task: CopyFiles@1
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+   SourceFolder: '$(build.sourcedirectory)'
+   Contents: |
+    **\bin\$(BuildConfiguration)\**
+    src\*.testsettings
+    TargetFolder: '$(build.artifactstagingdirecory)'
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: frop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed() 
