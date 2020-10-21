@@ -1,8 +1,18 @@
 # Build ASP.NET Core project using Azure Pipelines
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
 
+strategy:
+  matrix:
+    linux:
+      imageName: "ubuntu-16.04"
+    mac:
+      imageName: "macos-10.14"
+    windows:
+      imageName: "vs2017-win2016"
+  maxParallel: 3
+
 pool:
-  vmImage: 'vs2017-win2016'
+  vmImage: $(imageName)
   
 variables:
   buildConfiguration: 'Release'
